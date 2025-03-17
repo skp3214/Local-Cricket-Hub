@@ -20,7 +20,3 @@ venv.bak/
 
 # Migrations
 */migrations/*
-
-# Static files
-staticfiles/
-static/

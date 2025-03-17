@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOCAL CRICKET HUB - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to LOCAL CRICKET HUB</h1>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="options">
+            <div class="option-card">
+                <h2>Register Your Cricket Club</h2>
+                <p>Create and manage your cricket club. Organize tournaments and invite teams to participate.</p>
+                <a href="" class="btn-club">Register Club</a>
+            </div>
+
+            <div class="option-card">
+                <h2>Register a Team</h2>
+                <p>Join a cricket club and participate in tournaments. Manage your team and players.</p>
+                <a href="" class="btn-team">Register Team</a>
+            </div>
+        </div>
+        <div class="options">
+            <div class="option-card">
+                <a href="{% url 'core:home' %}" class="btn-team">Go To Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 LOCAL CRICKET HUB. All rights reserved.</p>
+    </footer>
+</body>
+</html>

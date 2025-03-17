@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOCAL CRICKET HUB - Manage Local Cricket Tournaments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header>
+        <h1>LOCAL CRICKET HUB</h1>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Welcome to LOCAL CRICKET HUB</h2>
+            <p>Manage and participate in local cricket tournaments with ease.</p>
+            
+            {% if user.is_authenticated %}
+            <div class="cta-buttons">
+                <a href="{% url 'core:logout' %}" class="btn-login">Logout</a>
+                <a href="{% url 'core:dashboard' %}" class="btn-signup">Dashboard</a>
+            </div>
+            {% else %}
+            <div class="cta-buttons">
+                <a href="{% url 'core:login' %}" class="btn-login">Login</a>
+                <a href="{% url 'core:signup' %}" class="btn-signup">Sign Up</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="about-section">
+        <h2>About LOCAL CRICKET HUB</h2>
+        <p>
+            LOCAL CRICKET HUB is a platform designed to help cricket clubs and teams manage local tournaments efficiently.
+            Whether you're organizing a tournament or participating in one, our tools make the process seamless and enjoyable.
+        </p>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 LOCAL CRICKET HUB. All rights reserved.</p>
+    </footer>
+</body>
+</html>
