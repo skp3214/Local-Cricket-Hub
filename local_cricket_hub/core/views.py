@@ -19,15 +19,21 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 def user_login(request):
+    
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            return redirect('core:dashboard')
+            if user.clubs.exists():
+                return redirect('clubs:club_dashboard', club_id=user.clubs.first().id)
+            else:
+                return redirect('core:dashboard')
         else:
             return render(request, 'login.html', {'error': 'Invalid login credentials'})
+    
     return render(request, 'login.html')
 
 @login_required

@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 2rem;
+}
+
+.header {
+    background-color: #6c63ff;
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1rem;
+}
+
+.today-match {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.today-match h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #444;
+}
+
+.today-match p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.today-match a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.today-match a:hover {
+    background-color: #5752d3;
+}
+
+.teams-section, .tournaments-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.teams-section h2, .tournaments-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #444;
+}
+
+.teams-section ul, .tournaments-section ul {
+    list-style: none;
+}
+
+.teams-section ul li, .tournaments-section ul li {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teams-section ul li span, .tournaments-section ul li span {
+    font-size: 1rem;
+    color: #666;
+}
+
+.teams-section ul li a, .tournaments-section ul li a {
+    padding: 0.5rem 1rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.teams-section ul li a:hover, .tournaments-section ul li a:hover {
+    background-color: #5752d3;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #666;
+}

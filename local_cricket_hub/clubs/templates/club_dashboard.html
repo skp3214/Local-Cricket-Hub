@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ club.name }} - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/club_dashboard.css' %}">
+</head>
+<body>
+    <div class="header">
+        {% if club.image %}
+        <img src="{{ club.image.url }}" alt="{{ club.name }} Logo">
+        {% else %}
+        <img src="https://via.placeholder.com/100" alt="Default Club Logo">
+        {% endif %}
+        <div>
+            <h1>{{ club.name }}</h1>
+            <p>{{ club.city }}, {{ club.pincode }}</p>
+        </div>
+    </div>
+
+    {% if today_match %}
+    <div class="today-match">
+        <h2>Today's Match</h2>
+        <p><strong>{{ today_match.team1.name }}</strong> vs <strong>{{ today_match.team2.name }}</strong></p>
+        <a href="{% url 'core:score_page' today_match.id %}">View Match</a>
+    </div>
+    {% endif %}
+
+    <div class="teams-section">
+        <h2>Teams</h2>
+        <ul>
+            {% for team in teams %}
+            <li>
+                <span>{{ team.name }}</span>
+                <a href="{% url 'core:team_details' team.id %}">View Team</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="tournaments-section">
+        <h2>Tournaments</h2>
+        <ul>
+            {% for tournament in tournaments %}
+            <li>
+                <span>{{ tournament.name }} ({{ tournament.get_type_display }})</span>
+                <a href="{% url 'core:tournament_details' tournament.id %}">View Tournament</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2023 LOCALCRICKETCLUB. All rights reserved.</p>
+    </div>
+</body>
+</html>
