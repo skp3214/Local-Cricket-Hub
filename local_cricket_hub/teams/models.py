@@ -24,7 +24,7 @@ class Player(models.Model):
         ('normal', 'Normal Player'),
     )
     name = models.CharField(max_length=100)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='players')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='players',blank=True, null=True)
     player_type = models.CharField(max_length=10, choices=PLAYER_TYPES)
     designation = models.CharField(max_length=10, choices=DESIGNATIONS)
 
