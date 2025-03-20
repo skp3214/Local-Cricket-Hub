@@ -6,7 +6,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
     image = models.ImageField(upload_to='team_images/', blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='teams')
-    club = models.ForeignKey(CricketClub, on_delete=models.CASCADE, related_name='teams')
+    club = models.ForeignKey(CricketClub, on_delete=models.SET_NULL, null=True, blank=True, related_name='teams')
 
     def __str__(self):
         return self.name
