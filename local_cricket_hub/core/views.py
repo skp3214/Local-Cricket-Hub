@@ -29,6 +29,8 @@ def user_login(request):
             login(request, user)
             if user.clubs.exists():
                 return redirect('clubs:club_dashboard', club_id=user.clubs.first().id)
+            elif user.teams.exists():
+                return redirect('teams:team_dashboard', team_id=user.teams.first().id)
             else:
                 return redirect('core:dashboard')
         else:
