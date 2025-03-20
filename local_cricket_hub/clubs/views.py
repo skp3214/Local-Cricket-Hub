@@ -31,3 +31,14 @@ def club_dashboard(request, club_id):
     return render(request, 'club_dashboard.html', {
         'club': club, 'teams': teams, 'tournaments': tournaments, 'today_match': today_match
     })
+    
+@login_required
+def disassociate_team(request, club_id, team_id):
+    club = get_object_or_404(CricketClub, id=club_id, owner=request.user)
+    team = get_object_or_404(club.teams, id=team_id)  # Ensure the team belongs to this club
+    if request.method == 'POST':
+        team.club = None
+        team.save()
+        messages.success(request, f"Team {team.name} has been disassociated from {club.name}.")
+        return redirect('clubs:club_dashboard', club_id=club.id)
+    return redirect('clubs:club_dashboard', club_id=club.id)

@@ -127,3 +127,39 @@ body {
     margin-top: 2rem;
     color: #666;
 }
+
+.disassociate-btn {
+    padding: 0.5rem 1rem;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.disassociate-btn:hover {
+    background-color: #cc0000;
+}
+
+.messages ul {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+.messages ul li {
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.messages ul li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.messages ul li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
