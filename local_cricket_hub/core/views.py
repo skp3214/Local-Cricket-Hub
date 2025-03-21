@@ -32,7 +32,8 @@ def user_login(request):
             elif user.teams.exists():
                 return redirect('teams:team_dashboard', team_id=user.teams.first().id)
             else:
-                return redirect('core:dashboard')
+                next_url = request.GET.get('next', 'core:dashboard')
+                return redirect(next_url)
         else:
             return render(request, 'login.html', {'error': 'Invalid login credentials'})
     
@@ -40,7 +41,12 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    if request.user.clubs.exists():
+        return redirect('clubs:club_dashboard', club_id=request.user.clubs.first().id)
+    elif request.user.teams.exists():
+        return redirect('teams:team_dashboard', team_id=request.user.teams.first().id)
+    else:
+        return render(request, 'dashboard.html')
 
 @login_required
 def user_logout(request):
