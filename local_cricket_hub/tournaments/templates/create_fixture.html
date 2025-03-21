@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Fixture - {{ tournament.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/create_fixture.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Create Fixture for {{ tournament.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <!-- Start Date -->
+            <div class="form-group">
+                <label for="id_start_date">Start Date</label>
+                <input type="date" id="id_start_date" name="start_date" required>
+            </div>
+            <!-- End Date -->
+            <div class="form-group">
+                <label for="id_end_date">End Date</label>
+                <input type="date" id="id_end_date" name="end_date" required>
+            </div>
+            <!-- Gap Days -->
+            <div class="form-group">
+                <label for="id_gap_days">Gap Days</label>
+                <input type="number" id="id_gap_days" name="gap_days" min="1" required>
+            </div>
+            <!-- Venues -->
+            <div class="form-group">
+                <label for="id_venues">Venues</label>
+                <textarea id="id_venues" name="venues" rows="3" placeholder="Enter venue names separated by commas (e.g., Mumbai, Chennai, Mohali)" required></textarea>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">Create Fixture</button>
+        </form>
+    </div>
+</body>
+</html>

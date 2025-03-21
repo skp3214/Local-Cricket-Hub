@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tournament.name }} - Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/tournament_detail.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>{{ tournament.name }}</h1>
+        <p>Organized by {{ tournament.club.name }}</p>
+    </div>
+
+    <!-- Details Section -->
+    <div class="details-section">
+        <h2>Tournament Details</h2>
+        <p><strong>Overs:</strong> {{ tournament.get_overs_display }}</p>
+        <p><strong>Team Limit:</strong> {{ tournament.team_limit }}</p>
+        <p><strong>Start Date:</strong> {{ tournament.start_date }}</p>
+        <p><strong>End Date:</strong> {{ tournament.end_date }}</p>
+        <p><strong>Venues:</strong> {{ tournament.venues}}</p>
+    </div>
+
+    <!-- Teams Section -->
+    <div class="teams-section">
+        <h2>Participating Teams</h2>
+        <ul>
+            {% for team in tournament.teams.all %}
+            <li>
+                <span>{{ team.name }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Actions Section -->
+    <div class="actions-section">
+        <a href="{% url 'tournaments:create_fixture' tournament.id %}" class="btn-create-fixture">Create Fixture</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2023 LOCALCRICKETCLUB. All rights reserved.</p>
+    </div>
+</body>
+</html>

@@ -13,11 +13,11 @@ class Tournament(models.Model):
     overs = models.IntegerField(choices=OVERS_CHOICES)
     team_limit = models.IntegerField(validators=[MinValueValidator(2)])
     teams = models.ManyToManyField(Team, related_name='tournaments')
-    start_date = models.DateField()
-    end_date = models.DateField()
-    gap_days = models.IntegerField(default=1)
-    venues = models.JSONField()  # Store list of venue names
-
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    gap_days = models.IntegerField(default=0)
+    venues = models.TextField(help_text="Enter venue names separated by commas (e.g., Mumbai, Chennai, Mohali)",null=True, blank=True)
+    
     def __str__(self):
         return f"{self.name} ({self.club.name})"
 
@@ -27,7 +27,8 @@ class Match(models.Model):
     team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team2')
     date = models.DateField()
     venue = models.CharField(max_length=100)
+    time = models.TimeField(null=True, blank=True)
     is_completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.team1.name} vs {self.team2.name} - {self.date}"
+        return f"{self.team1.name} vs {self.team2.name} - {self.date} - {self.venue}"
