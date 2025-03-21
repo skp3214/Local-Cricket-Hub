@@ -68,15 +68,35 @@
     </div>
 
     <div class="tournaments-section">
-        <h2>Tournaments</h2>
+        <h2>Tournaments Joined</h2>
         <ul>
-            {% for tournament in tournaments %}
+            {% for tournament in tournaments_joined %}
             <li>
                 <span>{{ tournament.name }} ({{ tournament.get_overs_display }})</span>
                 <a href="{% url 'tournaments:tournament_detail' tournament_id=tournament.id %}">View Tournament</a>
             </li>
             {% empty %}
             <li>No tournaments joined yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Available Tournaments Section -->
+    <div class="available-tournaments-section">
+        <h2>Available Tournaments</h2>
+        <ul>
+            {% for tournament in available_tournaments %}
+            <li>
+                <span>{{ tournament.name }} ({{ tournament.get_overs_display }})</span>
+                <span>Team Limit: {{ tournament.team_limit }} ({{ tournament.teams.count }} joined)</span>
+                {% if tournament.teams.count < tournament.team_limit %}
+                    <a href="{% url 'teams:participate_tournament' team_id=team.id tournament_id=tournament.id %}" class="btn-participate">Participate</a>
+                {% else %}
+                    <span class="btn-disabled">Limit Surpassed</span>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li>No available tournaments.</li>
             {% endfor %}
         </ul>
     </div>

@@ -140,3 +140,24 @@ body {
 .club-list li:hover {
     background-color: #f0f0f0;
 }
+
+.btn-participate {
+    padding: 0.5rem 1rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-participate:hover {
+    background-color: #5752d3;
+}
+
+.btn-disabled {
+    padding: 0.5rem 1rem;
+    background-color: #ccc;
+    color: #666;
+    border-radius: 5px;
+    cursor: not-allowed;
+}

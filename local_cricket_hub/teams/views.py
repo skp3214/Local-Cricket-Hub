@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .models import Team
 from .forms import TeamForm, PlayerForm
 from clubs.models import CricketClub
+from tournaments.models import Tournament
 
 @login_required
 def register_team(request):
@@ -23,11 +24,19 @@ def register_team(request):
 def team_dashboard(request, team_id):
     team = get_object_or_404(Team, id=team_id, owner=request.user)
     players = team.players.all()
-    tournaments = team.tournaments.all()
+    tournaments_joined = team.tournaments.all()
+    
+    # Fetch tournaments from the team's associated club
+    if team.club:
+        available_tournaments = team.club.tournaments.exclude(teams=team)
+    else:
+        available_tournaments = Tournament.objects.none()
+
     return render(request, 'team_dashboard.html', {
         'team': team,
         'players': players,
-        'tournaments': tournaments,
+        'tournaments_joined': tournaments_joined,
+        'available_tournaments': available_tournaments,
     })
 
 @login_required
@@ -71,3 +80,16 @@ def filter_clubs_by_pincode(request):
             return JsonResponse({'clubs': list(clubs)})
         return JsonResponse({'clubs': []})
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def participate_tournament(request, team_id, tournament_id):
+    team = get_object_or_404(Team, id=team_id, owner=request.user)
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+
+    if tournament.teams.count() < tournament.team_limit:
+        tournament.teams.add(team)
+        messages.success(request, f"Successfully joined {tournament.name}!")
+    else:
+        messages.error(request, "Cannot join. Tournament team limit surpassed.")
+
+    return redirect('teams:team_dashboard', team_id=team.id)
