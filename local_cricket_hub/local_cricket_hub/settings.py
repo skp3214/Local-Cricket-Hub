@@ -128,7 +128,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/login/'
 
+USE_I18N = True
 
+USE_TZ = True
+
+TIME_ZONE = 'Asia/Kolkata'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

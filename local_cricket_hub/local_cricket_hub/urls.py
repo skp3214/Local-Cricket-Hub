@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('core.urls')),
     path('clubs/', include('clubs.urls')),
     path('teams/', include('teams.urls')),
+    path('tournaments/', include('tournaments.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
