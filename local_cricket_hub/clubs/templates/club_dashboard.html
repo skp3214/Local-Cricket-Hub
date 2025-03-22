@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ club.name }} - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/club_dashboard.css' %}">
 </head>
 <body>
@@ -21,7 +21,6 @@
         </div>
     </div>
 
-    <!-- Display Messages -->
     {% if messages %}
         <div class="messages">
             <ul>
@@ -32,7 +31,6 @@
         </div>
     {% endif %}
 
-    <!-- Today's Match Section -->
     {% if today_match %}
         <div class="today-match">
             <h2>Today's Match</h2>
@@ -46,12 +44,20 @@
         </div>
     {% endif %}
 
-    <!-- Teams Section -->
     <div class="teams-section">
         <h2>Teams</h2>
         <ul>
             {% for team in teams %}
                 <li>
+                    {% if team.image %}
+                        <div class="team-images">
+                            <img src="{{ team.image.url }}" alt="{{ team.name }} Logo">
+                        </div>
+                    {% else %}
+                        <div class="team-images">
+                            <img src="https://via.placeholder.com/50" alt="Team Logo">
+                        </div>
+                    {% endif %}
                     <span>{{ team.name }}</span>
                     <form method="POST" action="{% url 'clubs:disassociate_team' club_id=club.id team_id=team.id %}" style="display:inline;">
                         {% csrf_token %}
@@ -64,7 +70,6 @@
         </ul>
     </div>
 
-    <!-- Tournaments Section -->
     <div class="tournaments-section">
         <h2>Tournaments</h2>
         <ul>
