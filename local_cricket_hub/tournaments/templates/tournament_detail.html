@@ -5,17 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ tournament.name }} - Details</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/tournament_detail.css' %}">
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <h1>{{ tournament.name }}</h1>
         <p>Organized by {{ tournament.club.name }}</p>
     </div>
 
-    <!-- Details Section -->
     <div class="details-section">
         <h2>Tournament Details</h2>
         <p><strong>Overs:</strong> {{ tournament.get_overs_display }}</p>
@@ -25,24 +23,86 @@
         <p><strong>Venues:</strong> {{ tournament.venues}}</p>
     </div>
 
-    <!-- Teams Section -->
     <div class="teams-section">
         <h2>Participating Teams</h2>
         <ul>
             {% for team in tournament.teams.all %}
             <li>
-                <span>{{ team.name }}</span>
+                <div class="team-images">
+                    {% if team.image %}
+                        <img src="{{ team.image.url }}" alt="{{ team.name }} Logo" />
+                    {% else %}
+                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                    {% endif %}
+                    <span>{{ team.name }}</span>
+                </div>
             </li>
             {% endfor %}
         </ul>
     </div>
 
-    <!-- Actions Section -->
-    <div class="actions-section">
-        <a href="{% url 'tournaments:create_fixture' tournament.id %}" class="btn-create-fixture">Create Fixture</a>
+    {% if not upcoming_matches and not past_matches and tournament.teams.count > 2 and user.clubs.exists %}
+        <div class="actions-section">
+            <a href="{% url 'tournaments:create_fixture' tournament.id %}" class="btn-create-fixture">Create Fixture</a>
+        </div>
+    {% endif %}
+
+    <div class="upcoming-matches-section">
+        <h2>Upcoming Matches</h2>
+        <ul>
+            {% for match in upcoming_matches %}
+            <li class="match-card">
+                <div class="team-images">
+                    {% if match.team1.image %}
+                        <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+                    {% else %}
+                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                    {% endif %}
+                    <span class="vs">vs</span>
+                    {% if match.team2.image %}
+                        <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+                    {% else %}
+                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                    {% endif %}
+                </div>
+                <div class="match-details">
+                    <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+                </div>
+            </li>
+            {% empty %}
+            <li>No upcoming matches.</li>
+            {% endfor %}
+        </ul>
     </div>
 
-    <!-- Footer -->
+    <div class="past-matches-section">
+        <h2>Past Matches</h2>
+        <ul>
+            {% for match in past_matches %}
+            <li class="match-card">
+                <div class="team-images">
+                    {% if match.team1.image %}
+                        <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+                    {% else %}
+                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                    {% endif %}
+                    <span class="vs">vs</span>
+                    {% if match.team2.image %}
+                        <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+                    {% else %}
+                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                    {% endif %}
+                </div>
+                <div class="match-details">
+                    <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+                </div>
+            </li>
+            {% empty %}
+            <li>No past matches.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <div class="footer">
         <p>&copy; 2023 LOCALCRICKETCLUB. All rights reserved.</p>
     </div>

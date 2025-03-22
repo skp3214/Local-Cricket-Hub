@@ -20,11 +20,17 @@ def create_tournament(request):
 
 @login_required
 def tournament_detail(request, tournament_id):
-    tournament = get_object_or_404(Tournament, id=tournament_id, club__owner=request.user)
+    tournament = get_object_or_404(Tournament, id=tournament_id)
     teams = tournament.teams.all()
+    upcoming_matches = tournament.matches.filter(date__gte=datetime.now())
+    past_matches = tournament.matches.filter(date__lt=datetime.now())
+    
     return render(request, 'tournament_detail.html', {
         'tournament': tournament,
         'teams': teams,
+        'upcoming_matches': upcoming_matches,
+        'past_matches': past_matches,
+        'user': request.user
     })
     
 
