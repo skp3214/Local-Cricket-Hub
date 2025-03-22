@@ -1,184 +1,244 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ team.name }} - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/team_dashboard.css' %}">
-</head>
-<body>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/team_dashboard.css' %}" />
+  </head>
+  <body>
     <div class="header">
-        {% if team.image %}
-            <img src="{{ team.image.url }}" alt="{{ team.name }} Logo">
-        {% else %}
-            <img src="https://via.placeholder.com/100" alt="Default Team Logo">
-        {% endif %}
-        <div>
-            <h1>{{ team.name }}</h1>
-        </div>
+      {% if team.image %}
+        <img src="{{ team.image.url }}" alt="{{ team.name }} Logo" />
+      {% else %}
+        <img src="https://via.placeholder.com/100" alt="Default Team Logo" />
+      {% endif %}
+      <div>
+        <h1>{{ team.name }}</h1>
+      </div>
+    </div>
+
+    <div class="club-section">
+      <a href="{% url "core:logout" %}" class="btn-participate">Logout</a>
     </div>
 
     {% if messages %}
-        <div class="messages">
-            <ul>
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+      <div class="messages">
+        <ul>
+          {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     {% endif %}
 
     <div class="club-section">
-        <h2>Club Association</h2>
-        {% if team.club %}
-            <p>Associated with: <strong>{{ team.club.name }}</strong> ({{ team.club.city }})</p>
-        {% else %}
-            <button onclick="openModal()">Associate with Club</button>
-        {% endif %}
+      <h2>Club Association</h2>
+      {% if team.club %}
+        <p>
+          Associated with: <strong>{{ team.club.name }}</strong> ({{ team.club.city }})
+        </p>
+      {% endif %}
+      <button onclick="openModal()">Associate with Club</button>
     </div>
 
     <div id="clubModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Find Clubs by Pincode</h2>
-            <form id="pincodeForm">
-                <label for="pincode">Enter Pincode:</label>
-                <input type="text" id="pincode" name="pincode" required>
-                <button type="button" onclick="fetchClubs()">Search</button>
-            </form>
-            <div class="club-list" id="clubList"></div>
-        </div>
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Find Clubs by Pincode</h2>
+        <form id="pincodeForm">
+          <label for="pincode">Enter Pincode:</label>
+          <input type="text" id="pincode" name="pincode" required />
+          <button type="button" onclick="fetchClubs()">Search</button>
+        </form>
+        <div class="club-list" id="clubList"></div>
+      </div>
     </div>
 
     <div class="players-section">
-        <h2>Players</h2>
-        <a href="{% url 'teams:add_player' team_id=team.id %}">Add Player</a>
-        <ul>
-            {% for player in players %}
-            <li>
-                <span>{{ player.name }} ({{ player.get_player_type_display }}) - {{ player.get_designation_display }}</span>
-                <a href="#">Edit Player</a>
-            </li>
-            {% empty %}
-            <li>No players added yet.</li>
-            {% endfor %}
-        </ul>
+      <h2>Players</h2>
+      <a href="{% url 'teams:add_player' team_id=team.id %}">Add Player</a>
+      <ul>
+        {% for player in players %}
+          <li>
+            <span>{{ player.name }} ({{ player.get_player_type_display }}) - {{ player.get_designation_display }}</span>
+            <a href="#">Edit Player</a>
+          </li>
+        {% empty %}
+          <li>No players added yet.</li>
+        {% endfor %}
+      </ul>
     </div>
 
     <div class="tournaments-section">
-        <h2>Tournaments Joined</h2>
-        <ul>
-            {% for tournament in tournaments_joined %}
-            <li>
-                <span>{{ tournament.name }} ({{ tournament.get_overs_display }})</span>
-                <a href="{% url 'tournaments:tournament_detail' tournament_id=tournament.id %}">View Tournament</a>
-            </li>
-            {% empty %}
-            <li>No tournaments joined yet.</li>
-            {% endfor %}
-        </ul>
+      <h2>Tournaments Joined</h2>
+      <ul>
+        {% for tournament in tournaments_joined %}
+          <li>
+            <span>{{ tournament.name }} ({{ tournament.get_overs_display }})</span>
+            <a href="{% url 'tournaments:tournament_detail' tournament_id=tournament.id %}">View Tournament</a>
+          </li>
+        {% empty %}
+          <li>No tournaments joined yet.</li>
+        {% endfor %}
+      </ul>
     </div>
 
-    <!-- Available Tournaments Section -->
     <div class="available-tournaments-section">
-        <h2>Available Tournaments</h2>
-        <ul>
-            {% for tournament in available_tournaments %}
-            <li>
-                <span>{{ tournament.name }} ({{ tournament.get_overs_display }})</span>
-                <span>Team Limit: {{ tournament.team_limit }} ({{ tournament.teams.count }} joined)</span>
-                {% if tournament.teams.count < tournament.team_limit %}
-                    <a href="{% url 'teams:participate_tournament' team_id=team.id tournament_id=tournament.id %}" class="btn-participate">Participate</a>
-                {% else %}
-                    <span class="btn-disabled">Limit Surpassed</span>
-                {% endif %}
-            </li>
-            {% empty %}
-            <li>No available tournaments.</li>
-            {% endfor %}
-        </ul>
+      <h2>Available Tournaments</h2>
+      <ul>
+        {% for tournament in available_tournaments %}
+          <li>
+            <span>{{ tournament.name }} ({{ tournament.get_overs_display }})</span>
+            <span>Team Limit: {{ tournament.team_limit }} ({{ tournament.teams.count }} joined)</span>
+            {% if tournament.teams.count < tournament.team_limit %}
+              <a href="{% url 'teams:participate_tournament' team_id=team.id tournament_id=tournament.id %}" class="btn-participate">Participate</a>
+            {% else %}
+              <span class="btn-disabled">Limit Surpassed</span>
+            {% endif %}
+          </li>
+        {% empty %}
+          <li>No available tournaments.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="upcoming-matches-section">
+      <h2>Upcoming Matches</h2>
+      <ul>
+        {% for match in upcoming_matches %}
+          <li class="match-card">
+            <div class="team-images">
+              {% if match.team1.image %}
+                <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+              {% else %}
+                <img src="https://via.placeholder.com/50" alt="Team Logo" />
+              {% endif %}
+              <span class="vs">vs</span>
+              {% if match.team2.image %}
+                <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+              {% else %}
+                <img src="https://via.placeholder.com/50" alt="Team Logo" />
+              {% endif %}
+            </div>
+            <div class="match-details">
+              <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+            </div>
+          </li>
+        {% empty %}
+          <li>No upcoming matches.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="past-matches-section">
+      <h2>Past Matches</h2>
+      <ul>
+        {% for match in past_matches %}
+          <li class="match-card">
+            <div class="team-images">
+              {% if match.team1.image %}
+                <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+              {% else %}
+                <img src="https://via.placeholder.com/50" alt="Team Logo" />
+              {% endif %}
+              <span class="vs">vs</span>
+              {% if match.team2.image %}
+                <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+              {% else %}
+                <img src="https://via.placeholder.com/50" alt="Team Logo" />
+              {% endif %}
+            </div>
+            <div class="match-details">
+              <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+            </div>
+          </li>
+        {% empty %}
+          <li>No past matches.</li>
+        {% endfor %}
+      </ul>
     </div>
 
     <div class="footer">
-        <p>© 2023 LOCALCRICKETCLUB. All rights reserved.</p>
+      <p>© 2023 LOCALCRICKETCLUB. All rights reserved.</p>
     </div>
 
     <script>
-        const modal = document.getElementById('clubModal');
-        const clubList = document.getElementById('clubList');
-
-        function openModal() {
-            modal.style.display = 'block';
+      const modal = document.getElementById('clubModal')
+      const clubList = document.getElementById('clubList')
+      
+      function openModal() {
+        modal.style.display = 'block'
+      }
+      
+      function closeModal() {
+        modal.style.display = 'none'
+        clubList.innerHTML = ''
+      }
+      
+      function fetchClubs() {
+        const pincode = document.getElementById('pincode').value
+        if (!pincode) {
+          alert('Please enter a pincode.')
+          return
         }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            clubList.innerHTML = ''; 
-        }
-
-        function fetchClubs() {
-            const pincode = document.getElementById('pincode').value;
-            if (!pincode) {
-                alert('Please enter a pincode.');
-                return;
+      
+        fetch("{% url 'teams:filter_clubs_by_pincode' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `pincode=${pincode}`
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            clubList.innerHTML = ''
+            if (data.clubs && data.clubs.length > 0) {
+              const ul = document.createElement('ul')
+              data.clubs.forEach((club) => {
+                const li = document.createElement('li')
+                li.textContent = `${club.name} (${club.city})`
+                li.onclick = () => associateWithClub(club.id)
+                ul.appendChild(li)
+              })
+              clubList.appendChild(ul)
+            } else {
+              clubList.innerHTML = '<p>No clubs found in this area.</p>'
             }
-
-            fetch("{% url 'teams:filter_clubs_by_pincode' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: `pincode=${pincode}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                clubList.innerHTML = '';
-                if (data.clubs && data.clubs.length > 0) {
-                    const ul = document.createElement('ul');
-                    data.clubs.forEach(club => {
-                        const li = document.createElement('li');
-                        li.textContent = `${club.name} (${club.city})`;
-                        li.onclick = () => associateWithClub(club.id);
-                        ul.appendChild(li);
-                    });
-                    clubList.appendChild(ul);
-                } else {
-                    clubList.innerHTML = '<p>No clubs found in this area.</p>';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                clubList.innerHTML = '<p>Error fetching clubs.</p>';
-            });
-        }
-
-        function associateWithClub(clubId) {
-            fetch("{% url 'teams:associate_club' team_id=team.id %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: `club=${clubId}`
-            })
-            .then(response => {
-                if (response.ok) {
-                    location.reload(); 
-                } else {
-                    alert('Failed to associate with club.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+            clubList.innerHTML = '<p>Error fetching clubs.</p>'
+          })
+      }
+      
+      function associateWithClub(clubId) {
+        fetch("{% url 'teams:associate_club' team_id=team.id %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `club=${clubId}`
+        })
+          .then((response) => {
+            if (response.ok) {
+              location.reload()
+            } else {
+              alert('Failed to associate with club.')
             }
+          })
+          .catch((error) => console.error('Error:', error))
+      }
+      
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          closeModal()
         }
+      }
     </script>
-</body>
+  </body>
 </html>

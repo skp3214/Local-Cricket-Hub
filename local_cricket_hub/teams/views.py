@@ -5,7 +5,9 @@ from django.http import JsonResponse
 from .models import Team
 from .forms import TeamForm, PlayerForm
 from clubs.models import CricketClub
-from tournaments.models import Tournament
+from tournaments.models import Tournament,Match
+from datetime import datetime
+from django.db.models import Q
 
 @login_required
 def register_team(request):
@@ -25,8 +27,10 @@ def team_dashboard(request, team_id):
     team = get_object_or_404(Team, id=team_id, owner=request.user)
     players = team.players.all()
     tournaments_joined = team.tournaments.all()
+    upcoming_matches = Match.objects.filter((Q(team1=team) | Q(team2=team)) & Q(date__gte=datetime.now()))
+    past_matches = Match.objects.filter((Q(team1=team) | Q(team2=team)) & Q(date__lt=datetime.now()))
     
-    # Fetch tournaments from the team's associated club
+    
     if team.club:
         available_tournaments = team.club.tournaments.exclude(teams=team)
     else:
@@ -37,6 +41,8 @@ def team_dashboard(request, team_id):
         'players': players,
         'tournaments_joined': tournaments_joined,
         'available_tournaments': available_tournaments,
+        'upcoming_matches': upcoming_matches,
+        'past_matches': past_matches
     })
 
 @login_required
