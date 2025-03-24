@@ -25,7 +25,11 @@
                 <label for="id_designation">Designation</label>
                 {{ form.designation }}
             </div>
+            {%if edit %}
+            <button type="submit" class="btn-submit">Update Player</button>
+            {%else%}
             <button type="submit" class="btn-submit">Add Player</button>
+            {%endif%}
         </form>
     </div>
 </body>

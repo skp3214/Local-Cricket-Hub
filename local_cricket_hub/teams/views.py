@@ -63,6 +63,20 @@ def add_player(request, team_id):
     return render(request, 'add_player.html', {'form': form, 'team': team})
 
 @login_required
+def edit_player(request, team_id, player_id):
+    team = get_object_or_404(Team, id=team_id, owner=request.user)
+    player = get_object_or_404(team.players, id=player_id)
+    if request.method == 'POST':
+        form = PlayerForm(request.POST, instance=player)
+        if form.is_valid():
+            form.save()
+            return redirect('teams:team_dashboard', team_id=team.id)
+    else:
+        form = PlayerForm(instance=player)
+    return render(request, 'add_player.html', {'form': form, 'team': team, 'edit': True,'player':player})
+
+
+@login_required
 def associate_club(request, team_id):
     team = get_object_or_404(Team, id=team_id, owner=request.user)
     if request.method == 'POST':

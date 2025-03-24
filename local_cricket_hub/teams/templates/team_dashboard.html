@@ -64,7 +64,7 @@
         {% for player in players %}
           <li>
             <span>{{ player.name }} ({{ player.get_player_type_display }}) - {{ player.get_designation_display }}</span>
-            <a href="#">Edit Player</a>
+            <a href="{% url 'teams:edit_player' team_id=team.id player_id=player.id %}">Edit Player</a>
           </li>
         {% empty %}
           <li>No players added yet.</li>
