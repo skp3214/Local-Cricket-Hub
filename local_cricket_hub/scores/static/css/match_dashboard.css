@@ -1,0 +1,177 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.match-dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.match-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.match-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.match-header h2 {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.match-header .match-info {
+    font-size: 14px;
+    color: #666;
+}
+
+.match-header .match-info .date {
+    margin-right: 10px;
+}
+
+.match-header .result {
+    font-weight: 500;
+    color: #2e7d32;
+    margin-top: 10px;
+    display: block;
+}
+
+.match-header .mom {
+    font-size: 14px;
+    color: #d81b60;
+    margin-top: 5px;
+    display: block;
+}
+
+.score-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.team-score {
+    text-align: center;
+}
+
+.team-score h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.team-score .score {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.match-tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+}
+
+.tab-button.active {
+    color: #000;
+    border-bottom: 2px solid #000;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.innings-section {
+    margin-bottom: 30px;
+}
+
+.innings-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.batting-card, .bowling-card, .fow-card, .nominations-card, .substitutions-card {
+    margin-bottom: 20px;
+}
+
+.batting-card h4, .bowling-card h4, .fow-card h4, .nominations-card h4, .substitutions-card h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-weight: 500;
+    color: #666;
+}
+
+.out-method {
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.extras, .total {
+    font-weight: 500;
+}
+
+.fow-card ul, .nominations-card ul, .substitutions-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.fow-card li, .nominations-card li, .substitutions-card li {
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+.substitutions-card .out {
+    color: #d32f2f;
+}
+
+.substitutions-card .in {
+    color: #388e3c;
+}

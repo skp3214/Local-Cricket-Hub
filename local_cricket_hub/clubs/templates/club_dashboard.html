@@ -39,7 +39,7 @@
         <div class="today-match">
             <h2>Today's Match</h2>
             <p><strong>{{ today_match.team1.name }}</strong> vs <strong>{{ today_match.team2.name }}</strong></p>
-            <a href="{% url 'scores:live_score' match_id=today_match.id %}">View Match</a>
+            <a href="{% url 'scores:match_dashboard' match_id=today_match.id %}">View Match</a>
         </div>
     {% else %}
         <div class="today-match">

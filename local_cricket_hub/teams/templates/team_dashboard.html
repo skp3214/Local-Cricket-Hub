@@ -21,7 +21,7 @@
     </div>
 
     <div class="club-section">
-      <a href="{% url "core:logout" %}" class="btn-participate">Logout</a>
+      <a href="{% url 'core:logout' %}" class="btn-participate">Logout</a>
     </div>
 
     {% if messages %}
@@ -110,22 +110,24 @@
       <ul>
         {% for match in upcoming_matches %}
           <li class="match-card">
-            <div class="team-images">
-              {% if match.team1.image %}
-                <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
-              {% else %}
-                <img src="https://via.placeholder.com/50" alt="Team Logo" />
-              {% endif %}
-              <span class="vs">vs</span>
-              {% if match.team2.image %}
-                <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
-              {% else %}
-                <img src="https://via.placeholder.com/50" alt="Team Logo" />
-              {% endif %}
-            </div>
-            <div class="match-details">
-              <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
-            </div>
+            <a href="{% url 'scores:match_dashboard' match.id %}">
+              <div class="team-images">
+                {% if match.team1.image %}
+                  <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+                {% else %}
+                  <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                {% endif %}
+                <span class="vs">vs</span>
+                {% if match.team2.image %}
+                  <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+                {% else %}
+                  <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                {% endif %}
+              </div>
+              <div class="match-details">
+                <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+              </div>
+            </a>
           </li>
         {% empty %}
           <li>No upcoming matches.</li>

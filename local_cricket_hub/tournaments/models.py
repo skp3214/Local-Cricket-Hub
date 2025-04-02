@@ -23,12 +23,14 @@ class Tournament(models.Model):
 
 class Match(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
-    team1 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team1')
-    team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team2')
+    team1 = models.ForeignKey('teams.Team', on_delete=models.CASCADE, related_name='matches_as_team1')
+    team2 = models.ForeignKey('teams.Team', on_delete=models.CASCADE, related_name='matches_as_team2')
     date = models.DateField()
     venue = models.CharField(max_length=100)
     time = models.TimeField(null=True, blank=True)
     is_completed = models.BooleanField(default=False)
+    winner = models.ForeignKey('teams.Team', on_delete=models.SET_NULL, null=True, blank=True, related_name='won_matches')
+    mom = models.ForeignKey('teams.Player', on_delete=models.SET_NULL, null=True, blank=True, related_name='mom_awards')
 
     def __str__(self):
         return f"{self.team1.name} vs {self.team2.name} - {self.date} - {self.venue}"

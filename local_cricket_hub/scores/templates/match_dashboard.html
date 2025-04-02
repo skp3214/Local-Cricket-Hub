@@ -1,0 +1,287 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ match.team1.name }} vs {{ match.team2.name }} - Match Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/match_dashboard.css' %}">
+</head>
+<body>
+    <div class="match-dashboard">
+        <div class="match-header">
+            <h1>{{ match.team1.name }} vs {{ match.team2.name }}</h1>
+            <h2>{{ tournament.name }} - Match {{ match.id }}</h2>
+            <div class="match-info">
+                <span class="date">{{ match.date }}</span>
+                <span class="venue">{{ match.venue }}</span>
+            </div>
+            {% if match.is_completed %}
+                <span class="result">
+                    {% if match.winner %}
+                        {{ match.winner.name }} won by
+                        {% if match.winner == inning1.team %}
+                            {% with runs_difference=inning1.total_runs|add:inning2.total_runs|add:"-" %}
+                                {{ runs_difference }} runs
+                            {% endwith %}
+                        {% else %}
+                            {% with wickets_difference=10|add:inning2.wickets|add:"-" %}
+                                {{ wickets_difference }} wickets
+                            {% endwith %}
+                        {% endif %}
+                    {% else %}
+                        Match tied
+                    {% endif %}
+                </span>
+                {% if match.mom %}
+                    <span class="mom">Player of the Match: {{ match.mom.name }} ({{ match.mom.team.name }}) - {{ match.mom.runs }} ({{ match.mom.balls }})</span>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="score-summary">
+            <div class="team-score">
+                <h3>{{ inning1.team.name }}</h3>
+                <div class="score">{{ inning1.total_runs }}/{{ inning1.wickets }} ({{ inning1.overs }} ov)</div>
+            </div>
+            <div class="team-score">
+                <h3>{{ inning2.team.name }}</h3>
+                <div class="score">{{ inning2.total_runs }}/{{ inning2.wickets }} ({{ inning2.overs }} ov)</div>
+            </div>
+        </div>
+
+        <div class="match-tabs">
+            <button class="tab-button active" onclick="openTab('scorecard')">Scorecard</button>
+            <button class="tab-button" onclick="openTab('commentary')">Commentary</button>
+            <button class="tab-button" onclick="openTab('stats')">Stats</button>
+            <button class="tab-button" onclick="openTab('news')">News</button>
+        </div>
+
+        <div id="scorecard" class="tab-content active">
+            <div class="innings-section">
+                <h3>{{ inning1.team.name }} Innings</h3>
+                <div class="batting-card">
+                    <h4>Batters</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Batter</th>
+                                <th>Runs</th>
+                                <th>Balls</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>SR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for score in inning1_batting %}
+                                <tr>
+                                    <td>
+                                        {{ score.player.name }}
+                                        {% if score.is_out %}
+                                            <span class="out-method">{{ score.out_type }}</span>
+                                        {% else %}
+                                            <span class="out-method">not out</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ score.runs }}</td>
+                                    <td>{{ score.balls }}</td>
+                                    <td>{{ score.fours }}</td>
+                                    <td>{{ score.sixes }}</td>
+                                    <td>{{ score.strike_rate }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="extras">
+                                <td colspan="5">Extras</td>
+                                <td>{{ inning1.extras }} (w {{ inning1.extras.wides|default:0 }}, lb {{ inning1.extras.legbyes|default:0 }})</td>
+                            </tr>
+                            <tr class="total">
+                                <td colspan="5">Total</td>
+                                <td>{{ inning1.total_runs }}/{{ inning1.wickets }} ({{ inning1.overs }} ov)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="fow-card">
+                    <h4>Fall of Wickets</h4>
+                    <ul>
+                        {% for fow in fall_of_wickets.inning1.id %}
+                            <li>{{ fow }}</li>
+                        {% empty %}
+                            <li>No wickets fell.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="bowling-card">
+                    <h4>Bowlers</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bowler</th>
+                                <th>O</th>
+                                <th>M</th>
+                                <th>Runs</th>
+                                <th>Wkts</th>
+                                <th>Eco</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for score in inning1_bowling %}
+                                <tr>
+                                    <td>{{ score.player.name }}</td>
+                                    <td>{{ score.overs }}</td>
+                                    <td>{{ score.maidens }}</td>
+                                    <td>{{ score.runs }}</td>
+                                    <td>{{ score.wickets }}</td>
+                                    <td>{{ score.economy }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                
+
+                <div class="substitutions-card">
+                    <h4>Substitutions</h4>
+                    <ul>
+                        <li><span class="out">Player Out</span> <span class="in">Player In</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if inning2 %}
+            <div class="innings-section">
+                <h3>{{ inning2.team.name }} Innings</h3>
+                <div class="batting-card">
+                    <h4>Batters</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Batter</th>
+                                <th>Runs</th>
+                                <th>Balls</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>SR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for score in inning2_batting %}
+                                <tr>
+                                    <td>
+                                        {{ score.player.name }}
+                                        {% if score.is_out %}
+                                            <span class="out-method">{{ score.out_type }}</span>
+                                        {% else %}
+                                            <span class="out-method">not out</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ score.runs }}</td>
+                                    <td>{{ score.balls }}</td>
+                                    <td>{{ score.fours }}</td>
+                                    <td>{{ score.sixes }}</td>
+                                    <td>{{ score.strike_rate }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="extras">
+                                <td colspan="5">Extras</td>
+                                <td>{{ inning2.extras }} (w {{ inning2.extras.wides|default:0 }}, lb {{ inning2.extras.legbyes|default:0 }})</td>
+                            </tr>
+                            <tr class="total">
+                                <td colspan="5">Total</td>
+                                <td>{{ inning2.total_runs }}/{{ inning2.wickets }} ({{ inning2.overs }} ov)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="fow-card">
+                    <h4>Fall of Wickets</h4>
+                    <ul>
+                        {% for fow in fall_of_wickets.inning2.id %}
+                            <li>{{ fow }}</li>
+                        {% empty %}
+                            <li>No wickets fell.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="bowling-card">
+                    <h4>Bowlers</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bowler</th>
+                                <th>O</th>
+                                <th>M</th>
+                                <th>Runs</th>
+                                <th>Wkts</th>
+                                <th>Eco</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for score in inning2_bowling %}
+                                <tr>
+                                    <td>{{ score.player.name }}</td>
+                                    <td>{{ score.overs }}</td>
+                                    <td>{{ score.maidens }}</td>
+                                    <td>{{ score.runs }}</td>
+                                    <td>{{ score.wickets }}</td>
+                                    <td>{{ score.economy }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="substitutions-card">
+                    <h4>Substitutions</h4>
+                    <ul>
+                        <li><span class="out">Player Out</span> <span class="in">Player In</span></li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div id="commentary" class="tab-content">
+            <h3>Commentary</h3>
+            <p>Commentary content goes here...</p>
+        </div>
+
+        <div id="stats" class="tab-content">
+            <h3>Stats</h3>
+            <p>Stats content goes here...</p>
+        </div>
+
+        <div id="news" class="tab-content">
+            <h3>News</h3>
+            <p>News content goes here...</p>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName('tab-content');
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = 'none';
+                tabcontent[i].classList.remove('active');
+            }
+            tabbuttons = document.getElementsByClassName('tab-button');
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove('active');
+            }
+            document.getElementById(tabName).style.display = 'block';
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

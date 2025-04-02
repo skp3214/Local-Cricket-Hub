@@ -27,8 +27,9 @@ def team_dashboard(request, team_id):
     team = get_object_or_404(Team, id=team_id, owner=request.user)
     players = team.players.all()
     tournaments_joined = team.tournaments.all()
-    upcoming_matches = Match.objects.filter((Q(team1=team) | Q(team2=team)) & Q(date__gte=datetime.now()))
+    upcoming_matches = Match.objects.filter((Q(team1=team) | Q(team2=team)) & Q(date__gt=datetime.now()))
     past_matches = Match.objects.filter((Q(team1=team) | Q(team2=team)) & Q(date__lt=datetime.now()))
+    todays_matches = Match.objects.filter((Q(team1=team) | Q(team2=team)) & Q(date=datetime.now()))
     
     
     if team.club:
@@ -42,7 +43,8 @@ def team_dashboard(request, team_id):
         'tournaments_joined': tournaments_joined,
         'available_tournaments': available_tournaments,
         'upcoming_matches': upcoming_matches,
-        'past_matches': past_matches
+        'past_matches': past_matches,
+        'todays_matches': todays_matches,
     })
 
 @login_required

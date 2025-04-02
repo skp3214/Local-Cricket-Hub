@@ -50,30 +50,32 @@
     <div class="upcoming-matches-section">
         <h2>Upcoming Matches</h2>
         <ul>
-            {% for match in upcoming_matches %}
+          {% for match in upcoming_matches %}
             <li class="match-card">
+              <a href="{% url 'scores:match_dashboard' match.id %}">
                 <div class="team-images">
-                    {% if match.team1.image %}
-                        <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
-                    {% else %}
-                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
-                    {% endif %}
-                    <span class="vs">vs</span>
-                    {% if match.team2.image %}
-                        <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
-                    {% else %}
-                        <img src="https://via.placeholder.com/50" alt="Team Logo" />
-                    {% endif %}
+                  {% if match.team1.image %}
+                    <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+                  {% else %}
+                    <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                  {% endif %}
+                  <span class="vs">vs</span>
+                  {% if match.team2.image %}
+                    <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+                  {% else %}
+                    <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                  {% endif %}
                 </div>
                 <div class="match-details">
-                    <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+                  <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
                 </div>
+              </a>
             </li>
-            {% empty %}
+          {% empty %}
             <li>No upcoming matches.</li>
-            {% endfor %}
+          {% endfor %}
         </ul>
-    </div>
+      </div>
 
     <div class="past-matches-section">
         <h2>Past Matches</h2>
