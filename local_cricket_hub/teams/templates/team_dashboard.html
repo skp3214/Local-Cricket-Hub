@@ -63,7 +63,11 @@
       <ul>
         {% for player in players %}
           <li>
-            <span>{{ player.name }} ({{ player.get_player_type_display }}) - {{ player.get_designation_display }}</span>
+            <span>
+              {{ player.name }} ({{ player.get_player_type_display }}){% if player.designation != 'normal' %}
+                - {{ player.get_designation_display }}
+              {% endif %}
+            </span>
             <a href="{% url 'teams:edit_player' team_id=team.id player_id=player.id %}">Edit Player</a>
           </li>
         {% empty %}
@@ -101,6 +105,37 @@
           </li>
         {% empty %}
           <li>No available tournaments.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+
+    <div class="todays-matches-section">
+      <h2>Today's Matches</h2>
+      <ul>
+        {% for match in todays_matches %}
+          <li class="match-card">
+            <a href="{% url 'scores:match_dashboard' match.id %}">
+              <div class="team-images">
+                {% if match.team1.image %}
+                  <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+                {% else %}
+                  <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                {% endif %}
+                <span class="vs">vs</span>
+                {% if match.team2.image %}
+                  <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+                {% else %}
+                  <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                {% endif %}
+              </div>
+              <div class="match-details">
+                <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+              </div>
+            </a>
+          </li>
+        {% empty %}
+          <li>No matches scheduled for today.</li>
         {% endfor %}
       </ul>
     </div>

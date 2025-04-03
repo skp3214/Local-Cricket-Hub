@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Match</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/match_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Add New Match</h2>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_tournament">Tournament</label>
+                {{ form.tournament }}
+            </div>
+            <div class="form-group">
+                <label for="id_team1">Team 1</label>
+                {{ form.team1 }}
+            </div>
+            <div class="form-group">
+                <label for="id_team2">Team 2</label>
+                {{ form.team2 }}
+            </div>
+            <div class="form-group">
+                <label for="id_date">Date</label>
+                {{ form.date }}
+            </div>
+            <div class="form-group">
+                <label for="id_time">Time</label>
+                {{ form.time }}
+            </div>
+            <div class="form-group">
+                <label for="id_venue">Venue</label>
+                {{ form.venue }}
+            </div>
+            <div class="form-group">
+                <label for="id_is_completed">Is Completed</label>
+                {{ form.is_completed }}
+            </div>
+            <div class="form-group">
+                <label for="id_winner">Winner</label>
+                {{ form.winner }}
+            </div>
+            <div class="form-group">
+                <label for="id_mom">Player of the Match</label>
+                {{ form.mom }}
+            </div>
+            <button type="submit" class="submit-button">Add Match</button>
+        </form>
+
+        <a href="{% url 'scores:match_dashboard' match_id=1 %}" class="back-link">Back to Dashboard</a>
+    </div>
+</body>
+</html>

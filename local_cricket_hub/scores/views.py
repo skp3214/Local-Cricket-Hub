@@ -1,31 +1,34 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from tournaments.models import Match
+from teams.models import Player
 from scores.models import Inning, BattingScore, BowlingScore
+from .forms import BattingScoreForm, BowlingScoreForm
+from django.http import HttpResponseForbidden
+from datetime import date
 
 @login_required
 def match_dashboard(request, match_id):
     match = get_object_or_404(Match, id=match_id)
     innings = match.innings.all().order_by('id')
+    
+    if match.date > date.today():
+        return HttpResponseForbidden("Wait for the match to start before viewing the dashboard.")
 
-    fall_of_wickets = {}
-    for inning in innings:
-        wickets = []
-        current_runs = 0
-        for score in inning.batting_scores.filter(is_out=True).order_by('id'):
-            current_runs += score.runs
-            wickets.append(f"{current_runs}-{inning.batting_scores.filter(is_out=True, id__lte=score.id).count()} ({score.player.name})")
-        fall_of_wickets[inning.id] = wickets
+    if not innings.exists():
+        Inning.objects.create(match=match, team=match.team1, total_runs=0, wickets=0, overs=0.0, extras=0)
+        Inning.objects.create(match=match, team=match.team2, total_runs=0, wickets=0, overs=0.0, extras=0)
+        innings = match.innings.all().order_by('id')
 
     context = {
         'match': match,
         'innings': innings,
-        'team1': match.team1,
-        'team2': match.team2,
+        'team1': match.team1.players.all(),
+        'team2': match.team2.players.all(),
         'tournament': match.tournament,
-        'fall_of_wickets': fall_of_wickets,
     }
-
+    
     if innings.exists():
         context['inning1'] = innings[0]
         context['inning1_batting'] = innings[0].batting_scores.all().order_by('-runs')
@@ -35,5 +38,126 @@ def match_dashboard(request, match_id):
             context['inning2'] = innings[1]
             context['inning2_batting'] = innings[1].batting_scores.all().order_by('-runs')
             context['inning2_bowling'] = innings[1].bowling_scores.all().order_by('-wickets')
-
+    
+    if match.mom:
+        mom_batting = BattingScore.objects.filter(player=match.mom, inning__match=match).first()
+        context['mom_batting'] = mom_batting
+    
     return render(request, 'match_dashboard.html', context)
+
+
+@login_required
+def edit_batting_score(request, match_id, player_id):
+    match = get_object_or_404(Match, id=match_id)
+    player = get_object_or_404(Player, id=player_id)
+    
+    if match.tournament.club.owner != request.user:
+        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+    
+    if match.date != date.today():
+        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+
+    innings = match.innings.all().order_by('id')
+
+    inning = None
+    for i in innings:
+        if i.team == player.team:
+            inning = i
+            break
+
+    if not inning:
+        messages.error(request, "Player does not belong to any team in this match.")
+        return redirect('scores:match_dashboard', match_id=match_id)
+
+    batting_score, created = BattingScore.objects.get_or_create(
+        inning=inning,
+        player=player,
+        defaults={'runs': 0, 'balls': 0, 'fours': 0, 'sixes': 0, 'is_out': False}
+    )
+
+    if request.method == 'POST':
+        form = BattingScoreForm(request.POST, instance=batting_score)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Batting score for {player.name} updated successfully!")
+            return redirect('scores:match_dashboard', match_id=match_id)
+    else:
+        form = BattingScoreForm(instance=batting_score)
+
+    return render(request, 'edit_batting_score.html', {
+        'form': form,
+        'player': player,
+        'match': match,
+        'inning': inning,
+    })
+
+@login_required
+def edit_bowling_score(request, match_id, player_id):
+    match = get_object_or_404(Match, id=match_id)
+    player = get_object_or_404(Player, id=player_id)
+    
+    if match.tournament.club.owner != request.user:
+        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+    
+    if match.date != date.today():
+        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+
+    innings = match.innings.all().order_by('id')
+
+    inning = None
+    for i in innings:
+        if i.team != player.team:
+            inning = i
+            break
+
+    if not inning:
+        messages.error(request, "Player does not belong to any team in this match.")
+        return redirect('scores:match_dashboard', match_id=match_id)
+
+    bowling_score, created = BowlingScore.objects.get_or_create(
+        inning=inning,
+        player=player,
+        defaults={'overs': 0, 'maidens': 0, 'runs': 0, 'wickets': 0, 'wides': 0, 'noballs': 0}
+    )
+
+    if request.method == 'POST':
+        form = BowlingScoreForm(request.POST, instance=bowling_score)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Bowling score for {player.name} updated successfully!")
+            return redirect('scores:match_dashboard', match_id=match_id)
+    else:
+        form = BowlingScoreForm(instance=bowling_score)
+
+    return render(request, 'edit_bowling_score.html', {
+        'form': form,
+        'player': player,
+        'match': match,
+        'inning': inning,
+    })
+    
+@login_required
+def edit_inning_scores(request, match_id, inning_id):
+    match = get_object_or_404(Match, id=match_id)
+    inning = get_object_or_404(Inning, id=inning_id, match=match)
+    
+    if match.tournament.club.owner != request.user:
+        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+    
+    if match.date != date.today():
+        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+
+    if request.method == 'POST':
+        inning.total_runs = int(request.POST.get('total_runs', inning.total_runs))
+        inning.wickets = int(request.POST.get('wickets', inning.wickets))
+        inning.overs = float(request.POST.get('overs', inning.overs))
+        inning.extras = int(request.POST.get('extras', inning.extras))
+        inning.save()
+
+        return redirect('scores:match_dashboard', match_id=match_id)
+
+    context = {
+        'match': match,
+        'inning': inning,
+    }
+    return render(request, 'edit_inning_score.html', context)

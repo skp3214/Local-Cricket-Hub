@@ -68,6 +68,22 @@ body {
     text-align: center;
 }
 
+.team-score h3 a {
+    text-decoration: none;
+    color: #2196f3;
+    font-weight: 500;
+}
+
+.match_link{
+    text-decoration: none;
+    color: #2196f3;
+    font-weight: 500;
+}
+
+.team-score h3 a:hover {
+    text-decoration: underline;
+}
+
 .team-score h3 {
     font-size: 18px;
     font-weight: 500;
@@ -121,11 +137,11 @@ body {
     border-radius: 5px;
 }
 
-.batting-card, .bowling-card, .fow-card, .nominations-card, .substitutions-card {
+.batting-card, .bowling-card {
     margin-bottom: 20px;
 }
 
-.batting-card h4, .bowling-card h4, .fow-card h4, .nominations-card h4, .substitutions-card h4 {
+.batting-card h4, .bowling-card h4 {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -158,20 +174,95 @@ th {
     font-weight: 500;
 }
 
-.fow-card ul, .nominations-card ul, .substitutions-card ul {
+/* Edit Players Tab Styles */
+.team-players {
+    margin-bottom: 20px;
+}
+
+.team-players h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.team-players ul {
     list-style: none;
     padding: 0;
 }
 
-.fow-card li, .nominations-card li, .substitutions-card li {
-    padding: 5px 0;
+.team-players li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.team-players li a {
+    text-decoration: none;
+    color: #2196f3;
+    font-weight: 500;
+}
+
+.team-players li a:hover {
+    text-decoration: underline;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.modal-content h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
     font-size: 14px;
+    margin-bottom: 20px;
 }
 
-.substitutions-card .out {
-    color: #d32f2f;
+.modal-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #2196f3;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
 }
 
-.substitutions-card .in {
-    color: #388e3c;
+.modal-button:hover {
+    background-color: #1976d2;
 }
