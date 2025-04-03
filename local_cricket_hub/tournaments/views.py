@@ -6,6 +6,12 @@ from datetime import timedelta
 from datetime import time,datetime
 from django.http import HttpResponseForbidden
 from datetime import date
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from .models import Tournament, Match
+from scores.models import BattingScore, BowlingScore
+from django.db.models import Sum
 
 @login_required
 def create_tournament(request):
@@ -20,20 +26,136 @@ def create_tournament(request):
         form = TournamentForm()
     return render(request, 'create_tournament.html', {'form': form})
 
+
+
 @login_required
 def tournament_detail(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
     teams = tournament.teams.all()
-    upcoming_matches = tournament.matches.filter(date__gt=datetime.now())
-    past_matches = tournament.matches.filter(date__lt=datetime.now())
-    today_matches = tournament.matches.filter(date=datetime.now())
-    
+    current_time = timezone.now()
+    upcoming_matches = tournament.matches.filter(date__gt=current_time)
+    past_matches = tournament.matches.filter(date__lt=current_time)
+    today_matches = tournament.matches.filter(date=current_time)
+
+    # Calculate points table with NEW NRR logic
+    points_table = []
+    for team in teams:
+        matches_played = tournament.matches.filter(team1=team) | tournament.matches.filter(team2=team)
+        gp = matches_played.count()  # Games Played
+        wins = 0
+        losses = 0
+        
+        # NEW: Track RR per match instead of total runs/overs
+        total_batting_rr = 0.0
+        total_bowling_rr = 0.0
+        matches_counted = 0
+
+        for match in matches_played:
+            inning_team1 = match.innings.filter(team=match.team1).first()
+            inning_team2 = match.innings.filter(team=match.team2).first()
+
+            if match.winner == team:
+                wins += 1
+            elif match.winner and match.winner != team:
+                losses += 1
+
+            # NEW: Calculate RR for each match separately
+            batted = False
+            bowled = False
+
+            # Batting RR (when team batted)
+            if inning_team1 and inning_team1.team == team:
+                runs = inning_team1.total_runs
+                overs = inning_team1.overs or 0.1
+                total_batting_rr += runs / overs
+                batted = True
+            if inning_team2 and inning_team2.team == team:
+                runs = inning_team2.total_runs
+                overs = inning_team2.overs or 0.1
+                total_batting_rr += runs / overs
+                batted = True
+
+            # Bowling RR (when team bowled)
+            if inning_team1 and inning_team1.team != team:
+                runs = inning_team1.total_runs
+                overs = inning_team1.overs or 0.1
+                total_bowling_rr += runs / overs
+                bowled = True
+            if inning_team2 and inning_team2.team != team:
+                runs = inning_team2.total_runs
+                overs = inning_team2.overs or 0.1
+                total_bowling_rr += runs / overs
+                bowled = True
+
+            if batted or bowled:
+                matches_counted += 1
+
+        pts = wins * 2  # 2 points per win
+        
+        # NEW: Calculate NRR by averaging match RRs
+        if matches_counted > 0:
+            avg_batting_rr = total_batting_rr / matches_counted
+            avg_bowling_rr = total_bowling_rr / matches_counted
+            print(f"Avg Batting RR for {team.name}: {avg_batting_rr}, Avg Bowling RR: {avg_bowling_rr}")
+            nrr = avg_batting_rr - avg_bowling_rr
+        else:
+            nrr = 0.0
+
+        points_table.append({
+            'team': team,
+            'pts': pts,
+            'gp': gp,
+            'w': wins,
+            'l': losses,
+            'nrr': round(nrr, 3)  # Round to 3 decimal places
+        })
+
+    # Sort points table by points (descending), then NRR (descending)
+    points_table.sort(key=lambda x: (-x['pts'], -x['nrr']))
+
+    # Assign ranks
+    for i, entry in enumerate(points_table, 1):
+        entry['rank'] = i
+
+    # Rest of your existing code (top batsmen/bowlers) remains unchanged
+    batting_scores = BattingScore.objects.filter(inning__match__tournament=tournament).order_by('-runs')
+    top_batsmen = []
+    seen_players = set()
+    for score in batting_scores:
+        if score.player not in seen_players and len(top_batsmen) < 5:
+            player_total_runs = BattingScore.objects.filter(player=score.player, inning__match__tournament=tournament).aggregate(total_runs=Sum('runs'))['total_runs'] or 0
+            top_batsmen.append({
+                'player': score.player,
+                'highest_score': score.runs,
+                'total_runs': player_total_runs
+            })
+            seen_players.add(score.player)
+
+    bowling_scores = BowlingScore.objects.filter(inning__match__tournament=tournament).order_by('-wickets')
+    top_bowlers = []
+    seen_players = set()
+    for score in bowling_scores:
+        if score.player not in seen_players and len(top_bowlers) < 5:
+            player_total_wickets = BowlingScore.objects.filter(player=score.player, inning__match__tournament=tournament).aggregate(total_wickets=Sum('wickets'))['total_wickets'] or 0
+            player_total_runs = BowlingScore.objects.filter(player=score.player, inning__match__tournament=tournament).aggregate(total_runs=Sum('runs'))['total_runs'] or 0
+            player_total_overs = BowlingScore.objects.filter(player=score.player, inning__match__tournament=tournament).aggregate(total_overs=Sum('overs'))['total_overs'] or 0.1
+            economy = player_total_runs / player_total_overs if player_total_overs else 0
+            top_bowlers.append({
+                'player': score.player,
+                'total_wickets': player_total_wickets,
+                'economy': round(economy, 2)
+            })
+            seen_players.add(score.player)
+
     return render(request, 'tournament_detail.html', {
         'tournament': tournament,
         'teams': teams,
         'upcoming_matches': upcoming_matches,
         'past_matches': past_matches,
         'todays_matches': today_matches,
+        'points_table': points_table,
+        'top_batsmen': top_batsmen,
+        'top_bowlers': top_bowlers,
         'user': request.user
     })
     

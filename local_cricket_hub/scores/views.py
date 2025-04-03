@@ -38,6 +38,14 @@ def match_dashboard(request, match_id):
             context['inning2'] = innings[1]
             context['inning2_batting'] = innings[1].batting_scores.all().order_by('-runs')
             context['inning2_bowling'] = innings[1].bowling_scores.all().order_by('-wickets')
+            
+            if match.winner:
+                if match.winner == innings[0].team:
+                    context['win_margin'] = innings[0].total_runs - innings[1].total_runs
+                    context['win_by'] = 'runs'
+                else:
+                    context['win_margin'] = 10 - innings[1].wickets
+                    context['win_by'] = 'wickets'
     
     if match.mom:
         mom_batting = BattingScore.objects.filter(player=match.mom, inning__match=match).first()

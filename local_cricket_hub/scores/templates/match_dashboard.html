@@ -23,15 +23,8 @@
         {% if match.is_completed %}
           <span class="result">
             {% if match.winner %}
-              {{ match.winner.name }} won by{% if match.winner == inning1.team %}
-                {% with runs_difference=inning1.total_runs|add:inning2.total_runs|add:'-' %}
-                  {{ runs_difference }} runs
-                {% endwith %}
-              {% else %}
-                {% with wickets_difference=10|add:inning2.wickets|add:'-' %}
-                  {{ wickets_difference }} wickets
-                {% endwith %}
-              {% endif %}
+              {{ match.winner.name }} won by
+              {{ win_margin }} {{ win_by }}
             {% else %}
               Match tied
             {% endif %}

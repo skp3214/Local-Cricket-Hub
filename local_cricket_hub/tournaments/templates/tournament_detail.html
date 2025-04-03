@@ -57,7 +57,89 @@
       </div>
     {% endif %}
 
+    <div class="points-table-section">
+      <h2>Points Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>PTS</th>
+            <th>GP</th>
+            <th>W</th>
+            <th>L</th>
+            <th>NRR</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in points_table %}
+            <tr>
+              <td>{{ entry.rank }}</td>
+              <td>
+                <div class="team-images">
+                  {% if entry.team.image %}
+                    <img src="{{ entry.team.image.url }}" alt="{{ entry.team.name }} Logo" />
+                  {% else %}
+                    <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                  {% endif %}
+                  <span>{{ entry.team.name }}</span>
+                </div>
+              </td>
+              <td>{{ entry.pts }}</td>
+              <td>{{ entry.gp }}</td>
+              <td>{{ entry.w }}</td>
+              <td>{{ entry.l }}</td>
+              <td>{{ entry.nrr }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
+    <div class="top-batsmen-section">
+      <h2>Top 5 Batsmen</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Highest Score</th>
+            <th>Total Runs</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for batsman in top_batsmen %}
+            <tr>
+              <td>{{ batsman.player.name }}</td>
+              <td>{{ batsman.highest_score }}</td>
+              <td>{{ batsman.total_runs }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="top-bowlers-section">
+      <h2>Top 5 Bowlers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Total Wickets</th>
+            <th>Economy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bowler in top_bowlers %}
+            <tr>
+              <td>{{ bowler.player.name }}</td>
+              <td>{{ bowler.total_wickets }}</td>
+              <td>{{ bowler.economy }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
     <div class="todays-matches-section">
       <h2>Today's Matches</h2>
       <ul>
@@ -147,7 +229,7 @@
     </div>
 
     <div class="footer">
-      <p>&copy; 2023 LOCALCRICKETCLUB. All rights reserved.</p>
+      <p>© 2023 LOCALCRICKETCLUB. All rights reserved.</p>
     </div>
   </body>
 </html>
