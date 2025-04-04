@@ -27,6 +27,7 @@ body {
 }
 
 .details-section,
+.tournament_edits,
 .teams-section,
 .todays-matches-section,
 .upcoming-matches-section,
@@ -41,7 +42,12 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
+.tournament_edits{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
 h2 {
   font-size: 24px;
   font-weight: 600;
@@ -86,7 +92,7 @@ p {
   color: #04324a;
 }
 
-.match-card {
+.match-card{
   background-color: #fff;
   padding: 15px;
   width: 400px;
@@ -96,13 +102,30 @@ p {
   border: 1px solid #04324a;
   transition: all 0.3s ease;
 }
+.add_match {
+  background-color: #fff;
+  padding: 15px;
+  width: auto;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+  border: 1px solid #04324a;
+  transition: all 0.3s ease;
+}
 
-.match-card:hover {
+.match-card:hover,
+.add_match:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.match-card a {
+.add_match a{
+  text-align: center;
+}
+
+.match-card a,
+.tournament_edits a
+ {
   text-decoration: none;
   color: inherit;
   display: flex;

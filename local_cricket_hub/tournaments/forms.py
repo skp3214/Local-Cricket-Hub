@@ -5,7 +5,7 @@ import json
 class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'overs', 'team_limit']
+        fields = ['name', 'overs', 'team_limit','tournament_winner']
     
 class FixtureForm(forms.ModelForm):
     class Meta:

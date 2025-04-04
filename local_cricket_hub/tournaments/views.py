@@ -27,6 +27,18 @@ def create_tournament(request):
     return render(request, 'create_tournament.html', {'form': form})
 
 
+@login_required
+def edit_tournament(request,tournament_id):  
+    tournament = get_object_or_404(Tournament, id=tournament_id, club__owner=request.user)
+    
+    if request.method == 'POST':
+        form = TournamentForm(request.POST, instance=tournament)
+        if form.is_valid():
+            form.save()
+            return redirect('tournaments:tournament_detail', tournament_id=tournament.id)
+    else:
+        form = TournamentForm(instance=tournament)
+    return render(request, 'create_tournament.html', {'form': form,'edit':True})
 
 @login_required
 def tournament_detail(request, tournament_id):
@@ -96,7 +108,6 @@ def tournament_detail(request, tournament_id):
         if matches_counted > 0:
             avg_batting_rr = total_batting_rr / matches_counted
             avg_bowling_rr = total_bowling_rr / matches_counted
-            print(f"Avg Batting RR for {team.name}: {avg_batting_rr}, Avg Bowling RR: {avg_bowling_rr}")
             nrr = avg_batting_rr - avg_bowling_rr
         else:
             nrr = 0.0

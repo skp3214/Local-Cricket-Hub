@@ -1,32 +1,100 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Tournament</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/create_tournament.css' %}">
-</head>
-<body>
-    <div class="form-container">
-        <h2>Create Tournament</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="id_name">Tournament Name</label>
-                {{ form.name }}
-            </div>
-            <div class="form-group">
-                <label for="id_overs">Overs</label>
-                {{ form.overs }}
-            </div>
-            <div class="form-group">
-                <label for="id_team_limit">Team Limit</label>
-                {{ form.team_limit }}
-            </div>
-            <button type="submit" class="btn-submit">Create Tournament</button>
-        </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% if edit %}
+        Edit Tournament
+      {% else %}
+        Create Tournament
+      {% endif %}
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/create_tournament.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>
+        {% if edit %}
+          Edit Tournament
+          <span class="edit-indicator">✏️ Editing Mode</span>
+        {% else %}
+          Create Tournament
+        {% endif %}
+      </h2>
+      
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="success">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
+      <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <label for="id_name">Tournament Name</label>
+          {{ form.name }}
+          {% if form.name.errors %}
+            <ul class="errorlist">
+              {% for error in form.name.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+          <label for="id_overs">Overs</label>
+          {{ form.overs }}
+          {% if form.overs.errors %}
+            <ul class="errorlist">
+              {% for error in form.overs.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+          <label for="id_team_limit">Team Limit</label>
+          {{ form.team_limit }}
+          {% if form.team_limit.errors %}
+            <ul class="errorlist">
+              {% for error in form.team_limit.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        
+        {% if edit %}
+          <div class="form-group">
+            <label for="id_tournament_winner">Tournament Winner</label>
+            {{ form.tournament_winner }}
+            {% if form.tournament_winner.errors %}
+              <ul class="errorlist">
+                {% for error in form.tournament_winner.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <button type="submit" class="submit-button">
+          {% if edit %}
+            Update Tournament
+          {% else %}
+            Create Tournament
+          {% endif %}
+        </button>
+      </form>
+      
     </div>
-</body>
+  </body>
 </html>

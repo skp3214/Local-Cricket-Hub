@@ -14,6 +14,17 @@
       <p>Organized by {{ tournament.club.name }}</p>
     </div>
 
+     {% if not user.teams.exists %}
+    <div class="tournament_edits">
+      <ul class="add_match">
+        <a href="{% url 'tournaments:add_match' %}">Add Match</a>
+      </ul>
+      <ul class="add_match">
+        <a href="{% url 'tournaments:edit_tournament' tournament_id=tournament.id %}">Edit Tournament</a>
+      </ul>
+    </div>
+    {% endif %}
+
     <div class="details-section">
       <h2>Tournament Details</h2>
       <p>
@@ -200,33 +211,37 @@
       </ul>
     </div>
 
-    <div class="past-matches-section">
+    <div class="upcoming-matches-section">
       <h2>Past Matches</h2>
       <ul>
         {% for match in past_matches %}
           <li class="match-card">
-            <div class="team-images">
-              {% if match.team1.image %}
-                <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
-              {% else %}
-                <img src="https://via.placeholder.com/50" alt="Team Logo" />
-              {% endif %}
-              <span class="vs">vs</span>
-              {% if match.team2.image %}
-                <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
-              {% else %}
-                <img src="https://via.placeholder.com/50" alt="Team Logo" />
-              {% endif %}
-            </div>
-            <div class="match-details">
-              <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
-            </div>
+            <a href="{% url 'scores:match_dashboard' match.id %}">
+              <div class="team-images">
+                {% if match.team1.image %}
+                  <img src="{{ match.team1.image.url }}" alt="{{ match.team1.name }} Logo" />
+                {% else %}
+                  <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                {% endif %}
+                <span class="vs">vs</span>
+                {% if match.team2.image %}
+                  <img src="{{ match.team2.image.url }}" alt="{{ match.team2.name }} Logo" />
+                {% else %}
+                  <img src="https://via.placeholder.com/50" alt="Team Logo" />
+                {% endif %}
+              </div>
+              <div class="match-details">
+                <div class="match-info">{{ match.date }} - {{ match.venue }}</div>
+              </div>
+            </a>
           </li>
         {% empty %}
-          <li>No past matches.</li>
+          <li>No upcoming matches.</li>
         {% endfor %}
       </ul>
     </div>
+
+    
 
     <div class="footer">
       <p>© 2023 LOCALCRICKETCLUB. All rights reserved.</p>

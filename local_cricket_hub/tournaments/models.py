@@ -17,6 +17,7 @@ class Tournament(models.Model):
     end_date = models.DateField(null=True, blank=True)
     gap_days = models.IntegerField(default=0)
     venues = models.TextField(help_text="Enter venue names separated by commas (e.g., Mumbai, Chennai, Mohali)",null=True, blank=True)
+    tournament_winner = models.CharField(Team, null=True, blank=True,max_length=50)
     
     def __str__(self):
         return f"{self.name} ({self.club.name})"
