@@ -40,11 +40,11 @@
       </div>
 
       <div class="score-summary">
-        <div class="team-score">
+        <div class="team-score score-edit">
           <h3><a href="{% url 'scores:edit_inning_scores' match_id=match.id inning_id=inning1.id %}">{{ inning1.team.name }}</a></h3>
           <div class="score">{{ inning1.total_runs }}/{{ inning1.wickets }} ({{ inning1.overs }} ov)</div>
         </div>
-        <div class="team-score">
+        <div class="team-score score-edit">
           <h3><a href="{% url 'scores:edit_inning_scores' match_id=match.id inning_id=inning2.id %}">{{ inning2.team.name }}</a></h3>
           <div class="score">{{ inning2.total_runs }}/{{ inning2.wickets }} ({{ inning2.overs }} ov)</div>
         </div>
@@ -91,7 +91,7 @@
                 {% endfor %}
                 <tr class="extras">
                   <td colspan="5">Extras</td>
-                  <td>{{ inning1.extras }} (w {{ inning1.extras.wides|default:0 }}, lb {{ inning1.extras.legbyes|default:0 }})</td>
+                  <td>{{ inning1.extras }}</td>
                 </tr>
                 <tr class="total">
                   <td colspan="5">Total</td>
@@ -166,7 +166,7 @@
                   {% endfor %}
                   <tr class="extras">
                     <td colspan="5">Extras</td>
-                    <td>{{ inning2.extras }} (w {{ inning2.extras.wides|default:0 }}, lb {{ inning2.extras.legbyes|default:0 }})</td>
+                    <td>{{ inning2.extras }}</td>
                   </tr>
                   <tr class="total">
                     <td colspan="5">Total</td>
@@ -209,7 +209,7 @@
 
       <div id="edit-players" class="tab-content">
         <h3>Edit Players</h3>
-        <div class="team-players">
+        <div class="team-players ">
           <h4>{{ match.team1.name }} Players</h4>
           <ul>
             {% for player in team1 %}

@@ -2,14 +2,14 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f4f8;
-    color: #333;
+    background-color: #fdf0d5;
+    color: #666;
     line-height: 1.6;
 }
 
 .header {
-    background-color: #2ecc71;
-    color: white;
+    background-color: #003049;
+    color: #fff;
     padding: 25px;
     text-align: center;
     display: flex;
@@ -24,10 +24,10 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: white;
+    background-color: #fff;
     object-fit: contain;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border: 3px solid white;
+    border: 3px solid #fff;
 }
 
 .header h1 {
@@ -38,19 +38,19 @@ body {
 
 .header p {
     font-size: 1.1rem;
-    color: #e0f7fa;
+    color: #fdf0d5;
     margin-bottom: 0;
 }
 
 .messages {
-    background-color: #e2f3ff;
-    color: #007bff;
+    background-color: #fdf0d5;
+    color: #04324a;
     padding: 15px;
     margin: 20px auto;
     text-align: center;
     border-radius: 8px;
     max-width: 80%;
-    border: 1px solid #b8daff;
+    border: 1px solid #003049;
 }
 
 .messages ul {
@@ -64,7 +64,7 @@ body {
 }
 
 .today-match {
-    background-color: white;
+    background-color: #fff;
     padding: 30px;
     margin: 20px auto;
     border-radius: 12px;
@@ -80,16 +80,16 @@ body {
 }
 
 .today-match h2 {
-    color: #2c3e50;
+    color: #04324a;
     margin-bottom: 20px;
     font-size: 2rem;
-    border-bottom: 3px solid #007bff;
+    border-bottom: 3px solid #003049;
     padding-bottom: 15px;
 }
 
 .today-match p {
     font-size: 1.2rem;
-    color: #555;
+    color: #666;
     margin-bottom: 25px;
     font-weight: 600;
 }
@@ -97,8 +97,8 @@ body {
 .today-match a {
     display: inline-block;
     padding: 12px 25px;
-    background-color: #ff6b6b;
-    color: white;
+    background-color: #003049;
+    color: #fff;
     text-decoration: none;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -107,13 +107,13 @@ body {
 }
 
 .today-match a:hover {
-    background-color: #ff4757;
+    background-color: #04324a;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .teams-section, .tournaments-section {
-    background-color: white;
+    background-color: #fff;
     padding: 30px;
     margin: 20px auto;
     border-radius: 12px;
@@ -128,10 +128,10 @@ body {
 }
 
 .teams-section h2, .tournaments-section h2 {
-    color: #2c3e50;
+    color: #04324a;
     margin-bottom: 25px;
     font-size: 2rem;
-    border-bottom: 3px solid #007bff;
+    border-bottom: 3px solid #003049;
     padding-bottom: 15px;
 }
 
@@ -165,8 +165,8 @@ body {
 
 .disassociate-btn {
     padding: 10px 20px;
-    background-color: #e74c3c;
-    color: white;
+    background-color: #003049;
+    color: #fff;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -176,7 +176,7 @@ body {
 }
 
 .disassociate-btn:hover {
-    background-color: #c0392b;
+    background-color: #04324a;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
@@ -201,14 +201,14 @@ body {
 }
 
 .tournaments-section ul li a {
-    color: #3498db;
+    color: #003049;
     text-decoration: none;
     transition: color 0.2s ease;
     font-weight: 600;
 }
 
 .tournaments-section ul li a:hover {
-    color: #217dbb;
+    color: #04324a;
     text-decoration: underline;
 }
 
@@ -220,8 +220,8 @@ body {
 .create-tournament a {
     display: inline-block;
     padding: 12px 25px;
-    background-color: #3498db;
-    color: white;
+    background-color: #003049;
+    color: #fff;
     text-decoration: none;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -230,18 +230,18 @@ body {
 }
 
 .create-tournament a:hover {
-    background-color: #217dbb;
+    background-color: #04324a;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .footer {
-    background-color: #2c3e50;
-    color: white;
+    background-color: #04324a;
+    color: #fff;
     text-align: center;
     padding: 25px 0;
     margin-top: 30px;
-    border-top: 4px solid #007bff;
+    border-top: 4px solid #003049;
     border-radius: 10px 10px 0 0;
 }
 
@@ -258,6 +258,7 @@ body {
     object-fit: cover;
     margin-right: 10px;
 }
+
 @media (max-width: 768px) {
     .header {
         flex-direction: column;

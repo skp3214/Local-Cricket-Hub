@@ -10,7 +10,22 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Add Player</h2>
+        <h2>
+            {% if edit %}
+                Edit Player
+            {% else %}
+                Add Player
+            {% endif %}
+            {% if team %}
+                - {{ team.name }}
+            {% endif %}
+            {% if player %}
+                - {{ player.name }}
+            {% endif %}
+            {% if match %}
+                - {{ match.name }}
+            {% endif %}
+        </h2>
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
