@@ -14,8 +14,12 @@ def match_dashboard(request, match_id):
     innings = match.innings.all().order_by('id')
     
     if match.date > date.today():
-        return HttpResponseForbidden("Wait for the match to start before viewing the dashboard.")
+        if match.tournament.club.owner == request.user:
+            return redirect("tournaments:tournament_detail",tournament_id = match.tournament.id)
+        else:
+            return redirect("teams:team_dashboard", team_id = match.team1.id if match.team1.owner == request.user else match.team2.id) 
 
+    
     if not innings.exists():
         Inning.objects.create(match=match, team=match.team1, total_runs=0, wickets=0, overs=0.0, extras=0)
         Inning.objects.create(match=match, team=match.team2, total_runs=0, wickets=0, overs=0.0, extras=0)
@@ -60,10 +64,10 @@ def edit_batting_score(request, match_id, player_id):
     player = get_object_or_404(Player, id=player_id)
     
     if match.tournament.club.owner != request.user:
-        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+        return redirect('scores:match_dashboard', match_id=match_id)
     
     if match.date != date.today():
-        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+        return redirect('scores:match_dashboard', match_id=match_id)
 
     innings = match.innings.all().order_by('id')
 
@@ -74,7 +78,6 @@ def edit_batting_score(request, match_id, player_id):
             break
 
     if not inning:
-        messages.error(request, "Player does not belong to any team in this match.")
         return redirect('scores:match_dashboard', match_id=match_id)
 
     batting_score, created = BattingScore.objects.get_or_create(
@@ -105,10 +108,10 @@ def edit_bowling_score(request, match_id, player_id):
     player = get_object_or_404(Player, id=player_id)
     
     if match.tournament.club.owner != request.user:
-        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+        return redirect('scores:match_dashboard', match_id=match_id)
     
     if match.date != date.today():
-        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+        return redirect('scores:match_dashboard', match_id=match_id)
 
     innings = match.innings.all().order_by('id')
 
@@ -119,7 +122,6 @@ def edit_bowling_score(request, match_id, player_id):
             break
 
     if not inning:
-        messages.error(request, "Player does not belong to any team in this match.")
         return redirect('scores:match_dashboard', match_id=match_id)
 
     bowling_score, created = BowlingScore.objects.get_or_create(
@@ -150,10 +152,10 @@ def edit_inning_scores(request, match_id, inning_id):
     inning = get_object_or_404(Inning, id=inning_id, match=match)
     
     if match.tournament.club.owner != request.user:
-        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+        return redirect('scores:match_dashboard', match_id=match_id)
     
     if match.date != date.today():
-        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+        return redirect('scores:match_dashboard', match_id=match_id)
 
     if request.method == 'POST':
         inning.total_runs = int(request.POST.get('total_runs', inning.total_runs))

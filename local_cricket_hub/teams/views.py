@@ -115,3 +115,4 @@ def participate_tournament(request, team_id, tournament_id):
         messages.error(request, "Cannot join. Tournament team limit surpassed.")
 
     return redirect('teams:team_dashboard', team_id=team.id)
+

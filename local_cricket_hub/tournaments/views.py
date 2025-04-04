@@ -249,10 +249,10 @@ def add_match(request):
 def edit_match(request, match_id):
     match = get_object_or_404(Match, id=match_id)
     if match.tournament.club.owner != request.user:
-        return HttpResponseForbidden("You do not have permission to edit scores for this match.")
+        return redirect('scores:match_dashboard', match_id=match_id)
     
     if match.date != date.today():
-        return HttpResponseForbidden("You can only edit scores for matches scheduled today.")
+        return redirect('scores:match_dashboard', match_id=match_id)
 
     if request.method == 'POST':
         form = MatchForm(request.POST, instance=match)
