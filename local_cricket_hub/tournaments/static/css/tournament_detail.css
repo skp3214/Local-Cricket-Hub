@@ -1,142 +1,154 @@
+/* General Styles */
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: #04324a;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf0d5;
+  color: #04324a;
   margin: 0;
   padding: 0;
-  color: #04324a;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  box-sizing: border-box;
 }
 
 .header {
+  background-color: #003049;
+  color: #fff;
+  padding: 25px 0;
   text-align: center;
-  padding: 20px;
-  background-color: #fdf0d5;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
-  font-size: 32px;
+  font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
-  color: #04324a;
 }
 
 .header p {
-  font-size: 16px;
-  color: #04324a;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.tournament_edits {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.tournament_edits a {
+  background-color: #003049;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.tournament_edits a:hover {
+  background-color: #04324a;
 }
 
 .details-section,
-.tournament_edits,
 .teams-section,
-.todays-matches-section,
-.upcoming-matches-section,
-.past-matches-section,
 .points-table-section,
 .top-batsmen-section,
-.top-bowlers-section {
-  background-color: #fdf0d5;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.top-bowlers-section,
+.todays-matches-section,
+.upcoming-matches-section,
+.past-matches-section {
+  background-color: #fff;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #04324a;
 }
-
-.tournament_edits{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 20px;
-}
-h2 {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  color: #04324a;
-  border-bottom: 2px solid #003049;
-  padding-bottom: 10px;
-}
-
-p {
-  font-size: 16px;
-  margin: 5px 0;
-  color: #04324a;
-}
-
-.teams-section ul,
 .todays-matches-section ul,
 .upcoming-matches-section ul,
 .past-matches-section ul {
-  list-style: none;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.todays-matches-section div,
+.upcoming-matches-section div,
+.past-matches-section div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.details-section h2,
+.teams-section h2,
+.points-table-section h2,
+.top-batsmen-section h2,
+.top-bowlers-section h2,
+.todays-matches-section h2,
+.upcoming-matches-section h2,
+.past-matches-section h2 {
+  color: #003049;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #04324a;
+  padding-bottom: 10px;
+}
+
+.teams-section ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
   padding: 0;
+  list-style: none;
 }
+
 .teams-section li {
-  margin: 10px;
-}
-
-.team-images {
-  display: flex;
-  align-items: center;
-}
-
-.team-images img {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-  border-radius: 50%;
-  border: 2px solid #003049;
-}
-
-.team-images span {
-  font-weight: 600;
-  color: #04324a;
-}
-
-.match-card{
-  background-color: #fff;
-  padding: 15px;
-  width: 400px;
+  background-color: #fdf0d5;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  border: 1px solid #04324a;
-  transition: all 0.3s ease;
-}
-.add_match {
-  background-color: #fff;
-  padding: 15px;
-  width: auto;
-  border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  margin-bottom: 15px;
-  border: 1px solid #04324a;
-  transition: all 0.3s ease;
-}
-
-.match-card:hover,
-.add_match:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.add_match a{
-  text-align: center;
-}
-
-.match-card a,
-.tournament_edits a
- {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.team-images {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.match-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  margin: 15px 0;
+  border: 1px solid #04324a;
+  transition: all 0.3s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.match-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.match-card ul,li {
+  list-style: none;
+  
+}
+
+.team-images {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 5px;
 }
 
 .team-images img {
@@ -148,141 +160,164 @@ p {
 }
 
 .vs {
+  font-size: 1.2rem;
   font-weight: bold;
   color: #003049;
-  margin: 0 10px;
 }
 
 .match-details {
-  text-align: right;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .match-info {
-  color: #04324a;
+  color: #666;
   font-size: 0.9rem;
 }
 
-.todays-matches-section > ul > li:not(.match-card),
-.upcoming-matches-section > ul > li:not(.match-card),
-.past-matches-section > ul > li:not(.match-card) {
-  padding: 15px;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 12px;
   text-align: center;
-  color: #666;
-  font-style: italic;
+  border-bottom: 1px solid #ddd;
 }
 
-@media (max-width: 768px) {
-  .match-card a {
-      flex-direction: column;
-      align-items: flex-start;
-  }
-  
-  .match-details {
-      text-align: left;
-      margin-top: 10px;
-      width: 100%;
-  }
-  
-  .team-images {
-      width: 100%;
-      justify-content: space-between;
-  }
-}
-
-.actions-section {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.btn-create-fixture {
-  display: inline-block;
-  padding: 10px 20px;
+th {
   background-color: #003049;
   color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  position: sticky;
+  top: 0;
 }
 
-.btn-create-fixture:hover {
-  background-color: #04324a;
+td {
+  background-color: #fff;
+}
+
+tr:nth-child(even) td {
+  background-color: #fdf0d5;
+}
+
+.team-images-table {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
 }
 
 .footer {
+  background-color: #003049;
+  color: white;
   text-align: center;
   padding: 20px;
-  background-color: #04324a;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #fff;
-  border-radius: 8px 8px 0 0;
+  margin-top: 30px;
 }
 
-.points-table-section table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+.matches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
-.points-table-section th,
-.points-table-section td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+@media (max-width: 992px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .header p {
+    font-size: 1rem;
+  }
+  
+  .teams-section ul {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 }
 
-.points-table-section th {
-  background-color: #003049;
-  color: #fff;
-  font-weight: 600;
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 0;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .details-section,
+  .points-table-section,
+  .top-batsmen-section,
+  .top-bowlers-section,
+  .todays-matches-section,
+  .upcoming-matches-section,
+  .past-matches-section {
+    padding: 20px;
+    
+  }
+
+  .teams-section div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .details-section h2,
+  .teams-section h2,
+  .points-table-section h2,
+  .top-batsmen-section h2,
+  .top-bowlers-section h2,
+  .todays-matches-section h2,
+  .upcoming-matches-section h2,
+  .past-matches-section h2 {
+    font-size: 1.5rem;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .team-images img {
+    width: 50px;
+    height: 50px;
+  }
 }
 
-.points-table-section td {
-  background-color: #fff;
-}
-
-.points-table-section tr:nth-child(even) td {
-  background-color: #fdf0d5;
-}
-
-.points-table-section .team-images img {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-  vertical-align: middle;
-  border: 1px solid #003049;
-}
-
-.top-batsmen-section table,
-.top-bowlers-section table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.top-batsmen-section th,
-.top-bowlers-section th,
-.top-batsmen-section td,
-.top-bowlers-section td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-.top-batsmen-section th,
-.top-bowlers-section th {
-  background-color: #04324a;
-  color: #fff;
-  font-weight: 600;
-}
-
-.top-batsmen-section td,
-.top-bowlers-section td {
-  background-color: #fff;
-}
-
-.top-batsmen-section tr:nth-child(even) td,
-.top-bowlers-section tr:nth-child(even) td {
-  background-color: #fdf0d5;
+@media (max-width: 576px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .header p {
+    font-size: 0.9rem;
+  }
+  
+  .tournament_edits {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .teams-section ul {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-images {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .vs {
+    margin: 10px 0;
+  }
+  
+  th, td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
 }
