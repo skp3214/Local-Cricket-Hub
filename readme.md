@@ -69,7 +69,7 @@ python manage.py runserver
 ![image](https://github.com/user-attachments/assets/0814f3e5-f1c0-454a-848c-fd542b659d1a)
 ![image](https://github.com/user-attachments/assets/4b5b4866-5a8d-40af-8479-f3bbe6f248c6)
 ![image](https://github.com/user-attachments/assets/46052c25-a9e6-464d-b3cc-87f27619eb20)
-![image](https://github.com/user-attachments/assets/9a52ee0c-f0e6-400d-8e17-4bf3e33b4f6e)
+![image](https://github.com/user-attachments/assets/cc444730-85ec-468f-bff0-2351857191c9)
 ![image](https://github.com/user-attachments/assets/3532358a-5f0a-44a3-95b5-2bda0a64e8fa)
 ![image](https://github.com/user-attachments/assets/2a9c4f7c-4293-43e8-9f63-51307481dddb)
 
