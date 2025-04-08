@@ -2,10 +2,9 @@
 # LOCAL CRICKET HUB🏏 
 
 ## Project Overview
-**LOCAL CRICKET HUB** is a web application built with Django to manage local cricket tournaments. It allows users to register cricket clubs, manage teams, create tournaments (20 or 50 overs), generate match fixtures, and track scores.
+**LOCAL CRICKET HUB** is a web application built with Django to manage local cricket tournaments. It allows users to register, create cricket clubs, manage teams, create tournaments (20 or 50 overs), generate match fixtures, and track scores.
 
 The goal is to provide a modern, scalable platform for local cricket enthusiasts to organize and participate in tournaments efficiently.
-Here's a more concise and structured version of your **Local Cricket Hub** project documentation:
 
 ---
 
