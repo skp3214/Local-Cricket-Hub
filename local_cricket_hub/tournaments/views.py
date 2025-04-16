@@ -49,15 +49,13 @@ def tournament_detail(request, tournament_id):
     past_matches = tournament.matches.filter(date__lt=current_time)
     today_matches = tournament.matches.filter(date=current_time)
 
-    # Calculate points table with NEW NRR logic
     points_table = []
     for team in teams:
         matches_played = tournament.matches.filter(team1=team) | tournament.matches.filter(team2=team)
-        gp = matches_played.count()  # Games Played
+        gp = matches_played.count()  
         wins = 0
         losses = 0
         
-        # NEW: Track RR per match instead of total runs/overs
         total_batting_rr = 0.0
         total_bowling_rr = 0.0
         matches_counted = 0
@@ -71,11 +69,9 @@ def tournament_detail(request, tournament_id):
             elif match.winner and match.winner != team:
                 losses += 1
 
-            # NEW: Calculate RR for each match separately
             batted = False
             bowled = False
 
-            # Batting RR (when team batted)
             if inning_team1 and inning_team1.team == team:
                 runs = inning_team1.total_runs
                 overs = inning_team1.overs or 0.1
@@ -87,7 +83,6 @@ def tournament_detail(request, tournament_id):
                 total_batting_rr += runs / overs
                 batted = True
 
-            # Bowling RR (when team bowled)
             if inning_team1 and inning_team1.team != team:
                 runs = inning_team1.total_runs
                 overs = inning_team1.overs or 0.1
@@ -102,9 +97,8 @@ def tournament_detail(request, tournament_id):
             if batted or bowled:
                 matches_counted += 1
 
-        pts = wins * 2  # 2 points per win
+        pts = wins * 2  
         
-        # NEW: Calculate NRR by averaging match RRs
         if matches_counted > 0:
             avg_batting_rr = total_batting_rr / matches_counted
             avg_bowling_rr = total_bowling_rr / matches_counted
@@ -118,17 +112,14 @@ def tournament_detail(request, tournament_id):
             'gp': gp,
             'w': wins,
             'l': losses,
-            'nrr': round(nrr, 3)  # Round to 3 decimal places
+            'nrr': round(nrr, 3)  
         })
 
-    # Sort points table by points (descending), then NRR (descending)
     points_table.sort(key=lambda x: (-x['pts'], -x['nrr']))
 
-    # Assign ranks
     for i, entry in enumerate(points_table, 1):
         entry['rank'] = i
 
-    # Rest of your existing code (top batsmen/bowlers) remains unchanged
     batting_scores = BattingScore.objects.filter(inning__match__tournament=tournament).order_by('-runs')
     top_batsmen = []
     seen_players = set()
@@ -183,21 +174,21 @@ def create_fixture(request, tournament_id):
             start_date = tournament.start_date
             end_date = tournament.end_date
             gap_days = tournament.gap_days
-            venues = [venue.strip() for venue in tournament.venues.split(',')]  # Split comma-separated string
+            venues = [venue.strip() for venue in tournament.venues.split(',')] 
             teams = list(tournament.teams.all())
 
             match_pairs = []
             for i in range(len(teams)):
                 for j in range(i + 1, len(teams)):
-                    match_pairs.append((teams[i], teams[j]))  # First match
-                    match_pairs.append((teams[j], teams[i]))  # Second match (reverse fixture)
+                    match_pairs.append((teams[i], teams[j]))  
+                    match_pairs.append((teams[j], teams[i]))  
 
             total_matches = len(match_pairs)
             print(f"Total matches to schedule: {total_matches}")
 
-            total_days = (end_date - start_date).days + 1  # Inclusive of start and end date
-            max_match_days = total_days // (gap_days + 1)  # Number of days available with gap
-            matches_per_day = max(1, (total_matches + max_match_days - 1) // max_match_days)  # Ceiling division
+            total_days = (end_date - start_date).days + 1  
+            max_match_days = total_days // (gap_days + 1)  
+            matches_per_day = max(1, (total_matches + max_match_days - 1) // max_match_days)  
 
             print(f"Total days: {total_days}, Max match days with gap: {max_match_days}, Matches per day: {matches_per_day}")
 
@@ -208,11 +199,10 @@ def create_fixture(request, tournament_id):
             while match_count < total_matches and current_date <= end_date:
                 teams_playing_today = set()
                 matches_scheduled_today = 0
-                match_time = time(10, 0)  # Start at 10:00 AM
-
+                match_time = time(10, 0)  
                 while (match_count < total_matches and 
                        matches_scheduled_today < matches_per_day and 
-                       match_time <= time(20, 0)):  # Stop at 8:00 PM
+                       match_time <= time(20, 0)):  
                     team1, team2 = match_pairs[match_count]
 
                     if team1 not in teams_playing_today and team2 not in teams_playing_today:
