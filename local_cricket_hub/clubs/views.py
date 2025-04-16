@@ -35,7 +35,7 @@ def club_dashboard(request, club_id):
 @login_required
 def disassociate_team(request, club_id, team_id):
     club = get_object_or_404(CricketClub, id=club_id, owner=request.user)
-    team = get_object_or_404(club.teams, id=team_id)  # Ensure the team belongs to this club
+    team = get_object_or_404(club.teams, id=team_id)  
     if request.method == 'POST':
         team.club = None
         team.save()
