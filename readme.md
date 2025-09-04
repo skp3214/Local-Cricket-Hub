@@ -61,6 +61,7 @@ python manage.py runserver
 
 --- 
 ## ScreenShots
+![Screenshot_4-9-2025_135725_local-cricket-hub onrender com](https://github.com/user-attachments/assets/814bed72-72a8-4fbb-820a-a3404b537983)
 ![image](https://github.com/user-attachments/assets/b6aa59c0-d4d1-48b2-8efe-5d0470e5ff5f)
 ![image](https://github.com/user-attachments/assets/9053c72a-bbe6-4fd9-9ecd-cc91ee90f006)
 ![image](https://github.com/user-attachments/assets/808d4b65-ed56-41af-98c9-dc3922d65020)
